@@ -36,7 +36,8 @@ export default class Directive implements ng.IDirective {
 		showHeader:  '=?',
 		additions:   '=?',
 		change:      '&?',
-		selectable:  '&?'
+		selectable:  '&?',
+		attachToSelector: '@?'
 	};
 
 	constructor(
@@ -53,7 +54,7 @@ export default class Directive implements ng.IDirective {
 			// one-way binding attributes
 			angular.forEach([
 				'locale', 'format', 'minView', 'maxView', 'startView', 'position', 'inline', 'validate', 'autoclose', 'setOnSelect', 'today',
-				'keyboard', 'showHeader', 'leftArrow', 'rightArrow', 'additions'
+				'keyboard', 'showHeader', 'leftArrow', 'rightArrow', 'additions', 'attachToSelector'
 			], (attr: string) => {
 				if (!angular.isDefined($scope[attr])) $scope[attr] = this.provider[attr];
 				if (!angular.isDefined($attrs[attr])) $attrs[attr] = $scope[attr];
@@ -158,7 +159,11 @@ export default class Directive implements ng.IDirective {
 
 					$scope.isOpen = true;
 					$scope.view.isOpen = true;
-					document.body.appendChild($scope.picker[0]);
+					if ($scope.attachToSelector) {
+						document.querySelector($scope.attachToSelector)?.appendChild($scope.picker[0])
+					} else {
+						document.body.appendChild($scope.picker[0]);
+					}
 					$scope.view.position();
 				},
 				close: () => {
