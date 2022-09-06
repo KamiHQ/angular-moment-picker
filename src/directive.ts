@@ -155,7 +155,7 @@ export default class Directive implements ng.IDirective {
 				update: () => { $scope.view.value = momentToValue($scope.view.moment, $scope.format); },
 				toggle: () => { $scope.view.isOpen ? $scope.view.close() : $scope.view.open(); },
 				open: () => {
-					if ($scope.disabled || $scope.view.isOpen || $scope.inline) return;
+					if ($scope.disabled || $scope.view.isOpen) return;
 
 					$scope.isOpen = true;
 					$scope.view.isOpen = true;
@@ -167,7 +167,7 @@ export default class Directive implements ng.IDirective {
 					$scope.view.position();
 				},
 				close: () => {
-					if (!$scope.view.isOpen || $scope.inline) return;
+					if (!$scope.view.isOpen) return;
 
 					$scope.isOpen = false;
 					$scope.view.isOpen = false;
@@ -307,9 +307,8 @@ export default class Directive implements ng.IDirective {
 				: angular.element($element[0]);
 			$scope.input.addClass('moment-picker-input').attr('tabindex', 0);
 			($scope.position || '').split(' ').forEach((className: string) => $scope.picker.addClass(className));
-			if (!$scope.inline) $scope.picker[0].parentNode.removeChild($scope.picker[0]);
-			else {
-				$element.after($scope.picker);
+			$scope.picker[0].parentNode.removeChild($scope.picker[0]);
+			if ($scope.inline) {
 				$scope.picker.addClass('inline');
 			}
 
@@ -423,8 +422,9 @@ export default class Directive implements ng.IDirective {
 			});
 			$scope.$watch('validate', $scope.limits.checkValue);
 			$scope.$watch('isOpen', (isOpen: boolean) => {
-				if ($scope.inline) $scope.view.isOpen = true;
-				else if (angular.isDefined(isOpen) && isOpen != $scope.view.isOpen) $scope.view.toggle();
+				if (angular.isDefined(isOpen) && isOpen != $scope.view.isOpen) {
+					$scope.view.toggle();
+				}
 			});
 
 			// event listeners
