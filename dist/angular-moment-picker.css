@@ -51,10 +51,6 @@
   position: relative;
   margin: 0;
 }
-.moment-picker.inline .moment-picker-container:before,
-.moment-picker.inline .moment-picker-container:after {
-  content: none;
-}
 .moment-picker.top .moment-picker-container {
   bottom: 100%;
   margin-top: auto;
