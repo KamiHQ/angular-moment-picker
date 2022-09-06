@@ -160,7 +160,7 @@ export default class Directive implements ng.IDirective {
 					$scope.isOpen = true;
 					$scope.view.isOpen = true;
 					if ($scope.attachToSelector) {
-						document.querySelector($scope.attachToSelector)?.appendChild($scope.picker[0])
+						document.querySelector($scope.attachToSelector).appendChild($scope.picker[0]);
 					} else {
 						document.body.appendChild($scope.picker[0]);
 					}
